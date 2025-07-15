@@ -28,10 +28,10 @@
 // };
 class Solution {
 public:
-    long getLen(ListNode* head){
+    long getLen(ListNode* &head){
         ListNode* temp = head;
         long len = 1;
-        while(temp->next != NULL){
+        while(temp != NULL){
             temp=temp->next;
             len++;
         }
