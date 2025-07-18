@@ -28,13 +28,10 @@ public:
         
        }
        // Recursive Call
-       if(fowd != NULL){
+       
         head->next = reverse(fowd,k,count-k);
         
-       }
         return prev;
-       
-
     }
     ListNode* reverseKGroup(ListNode* head, int k) {
         if(head->next == NULL || k == 1){
