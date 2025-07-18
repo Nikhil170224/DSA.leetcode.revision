@@ -10,20 +10,16 @@
  */
 class Solution {
 public:
-    ListNode* reverse(ListNode* &head, int k){
+    ListNode* reverse(ListNode* &head, int k,int count){
         ListNode* prev = NULL;
         ListNode* curr = head;
         ListNode* fowd =NULL;
        
-        int count = 0;
-        // First, check if there are at least k nodes
-        ListNode* temp = head;
-        while (temp != NULL && count < k) {
-            temp = temp->next;
-            count++;
+        // Base Case 
+        if (count < k){
+         return head; // Do not reverse if nodes are fewer than k
         }
-
-        if (count < k) return head; // Do not reverse if nodes are fewer than k
+        //ek case khud solve kardo!
        for(int i = 0; curr != NULL && i< k ; i++){
         fowd=curr->next;
         curr->next = prev;
@@ -31,8 +27,9 @@ public:
         curr=fowd;
         
        }
+       // Recursive Call
        if(fowd != NULL){
-        head->next = reverse(fowd,k);
+        head->next = reverse(fowd,k,count-k);
         
        }
         return prev;
@@ -43,7 +40,14 @@ public:
         if(head->next == NULL || k == 1){
             return head;
         }
+          int count = 0;
+        // First, check if there are at least k nodes
+        ListNode* temp = head;
+        while (temp != NULL) {
+            temp = temp->next;
+            count++;
+        }
         // function call to reverse successive groups which returns 
-        return reverse(head,k);
+        return reverse(head,k,count);
     }
 };
