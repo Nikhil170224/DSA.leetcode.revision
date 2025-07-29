@@ -69,29 +69,62 @@
 // };
 
 // #3 Approach - we gona use an array to store the maxRightHeight for all the indices and after that What we gona do, we can ensure faster Lookups for maxRightHeight --> T.C = O(n) || S.C = O(n)
+// class Solution {
+// public:
+//  void findRightMaxHeight(vector<int>& height, vector<int>& maxRightHeight){
+//     int n = height.size();
+//     int maxHeight = 0;
+//     for(int i = n - 1; i >= 0; i--){
+//         maxRightHeight[i] = maxHeight;
+//         maxHeight = max(maxHeight, height[i]);
+//     }
+// }
+//     int trap(vector<int>& height) {
+//         vector<int>maxRightHeight(height.size(),0);
+//         findRightMaxHeight(height,maxRightHeight);
+//         int totalWaterTrapped = 0;
+//         int maxLeftHeight = 0;
+//         for(int i = 0; i< height.size(); i++){
+//             int currHeight = height[i];
+//             int waterTrapped = min(maxLeftHeight, maxRightHeight[i]) - currHeight;
+//             if(waterTrapped > 0){
+//                 totalWaterTrapped += waterTrapped;
+//             }
+//             maxLeftHeight = max(maxLeftHeight,height[i]);
+//         }
+//         return totalWaterTrapped;
+//     }
+// };
+
+// #4 most optimised one T.C = O(n) & S.C = O(1)
 class Solution {
 public:
- void findRightMaxHeight(vector<int>& height, vector<int>& maxRightHeight){
+ int trap(vector<int>& height) {
     int n = height.size();
-    int maxHeight = 0;
-    for(int i = n - 1; i >= 0; i--){
-        maxRightHeight[i] = maxHeight;
-        maxHeight = max(maxHeight, height[i]);
-    }
-}
-    int trap(vector<int>& height) {
-        vector<int>maxRightHeight(height.size(),0);
-        findRightMaxHeight(height,maxRightHeight);
-        int totalWaterTrapped = 0;
-        int maxLeftHeight = 0;
-        for(int i = 0; i< height.size(); i++){
-            int currHeight = height[i];
-            int waterTrapped = min(maxLeftHeight, maxRightHeight[i]) - currHeight;
-            if(waterTrapped > 0){
-                totalWaterTrapped += waterTrapped;
+    int res = 0;
+    int maxLeft = 0, maxRight = 0;
+    int left = 0, right = n-1;
+    while(left <= right){
+        if(height[left] <= height[right]){
+            if(height[left] >= maxLeft){
+                maxLeft = height[left];
             }
-            maxLeftHeight = max(maxLeftHeight,height[i]);
+            else{
+                res += maxLeft - height[left];
+            }
+            left++;
+
         }
-        return totalWaterTrapped;
+        else{
+            if(height[right] >= maxRight){
+                maxRight = height[right];
+            }
+            else{
+                res += maxRight - height[right];
+            }
+            right--;
+        }
+    }
+    return res;
     }
 };
