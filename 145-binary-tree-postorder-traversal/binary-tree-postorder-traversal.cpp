@@ -28,25 +28,57 @@
 // };
 
 // ITERATIVE SOLUTION :
+// class Solution {
+// public:
+//     vector<int> postorderTraversal(TreeNode* root) {
+//         vector<int>res;
+//         if(!root) return res;
+//         stack<TreeNode*>st1;
+//         stack<TreeNode*>st2;
+//         st1.push(root);
+//         while(!st1.empty()){
+//             TreeNode* curr = st1.top();
+//             st1.pop();
+//             st2.push(curr);
+//             if(curr->left) st1.push(curr->left);
+//             if(curr->right) st1.push(curr->right);
+//         }
+//         while(!st2.empty()){
+//             TreeNode* curr = st2.top();
+//             res.push_back(curr->val);
+//             st2.pop();
+//         }
+//         return res;
+//     }
+// };
+
+//M2 Iterative: 
 class Solution {
 public:
     vector<int> postorderTraversal(TreeNode* root) {
         vector<int>res;
-        if(!root) return res;
-        stack<TreeNode*>st1;
-        stack<TreeNode*>st2;
-        st1.push(root);
-        while(!st1.empty()){
-            TreeNode* curr = st1.top();
-            st1.pop();
-            st2.push(curr);
-            if(curr->left) st1.push(curr->left);
-            if(curr->right) st1.push(curr->right);
-        }
-        while(!st2.empty()){
-            TreeNode* curr = st2.top();
-            res.push_back(curr->val);
-            st2.pop();
+        stack<TreeNode*>st;
+        TreeNode* curr = root;
+        TreeNode* temp;
+        while(curr != NULL || !st.empty()){
+            if(curr != NULL){
+                st.push(curr);
+                curr = curr->left;
+            }
+            else{
+                temp = st.top()->right;
+                if(temp == NULL){
+                    temp = st.top();
+                    st.pop();
+                    res.push_back(temp->val);
+                    while(!st.empty() && temp == st.top()->right){
+                        temp = st.top();
+                        st.pop();
+                        res.push_back(temp->val);
+                    }
+                }
+                else curr = temp;
+            }
         }
         return res;
     }
